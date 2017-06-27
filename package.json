@@ -1,0 +1,25 @@
+{
+  "name": "@toddpa/shared-module",
+  "version": "0.1.3",
+  "description": "A template for a shared module",
+  "author": "Paul Todd",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "types": "./src/common/index.d.ts",
+  "dependencies": {},
+  "devDependencies": {
+    "ts-loader": "^2.1.0",
+    "ts-node": "^3.0.6",
+    "tslint": "^5.4.3",
+    "typescript": "^2.3.4",
+    "typings": "^2.1.1"
+  },
+  "main": "index.js",
+  "keywords": [
+    "typescript",
+    "vscode"
+  ]
+}
