@@ -6,12 +6,11 @@
   "license": "MIT",
   "scripts": {
     "tsc": "tsc",
-    "build": "npm run tsc && npm test",
+    "build": "npm run tsc && npm run coverage",
     "watch": "tsc -w",
     "test": "JASMINE_CONFIG_PATH=jasmine.json jasmine-ts \"./src/**/*.spec.ts\"",
     "run": "ts-node ./src/common/index.ts",
-    "cover": "JASMINE_CONFIG_PATH=jasmine.json istanbul cover node_modules/jasmine/bin/jasmine.js",
-    "test:coverage": "ts-node node_modules/istanbul/lib/cli.js cover -e .ts  -x \"*.d.ts\" -x \"*.spec.ts\" node_modules/jasmine/bin/jasmine.js -- JASMINE_CONFIG_PATH=jasmine.json"
+    "coverage": "ts-node node_modules/istanbul/lib/cli.js cover -e .ts  -x \"*.d.ts\" -x \"*.spec.ts\" node_modules/jasmine/bin/jasmine.js -- JASMINE_CONFIG_PATH=jasmine.json"
  },
   "types": "index.d.ts",
   "main": "index.js",
