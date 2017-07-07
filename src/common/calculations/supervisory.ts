@@ -5,62 +5,51 @@ export class Supervisory extends Formula {
    log: any = {};
 
    calc(K: number, L: number, Detach: number, N: number, LGD: number, tau: number = 1000, omega: number = 20) {
-      let dist = new BetaDist();
-      let T: number;
-      let H: number;
-      let c: number;
-      let V: number;
-      let F: number;
-      let G: number;
-      let a: number;
-      let b: number;
-      let D: number;
-      let K_L: number;
-      let K_KIRB: number;
-      let K_L_T: number;
+      const dist = new BetaDist();
+
+      const T = Detach - L;
+      const H = Math.pow(1 - (K / LGD), N);
+      const c = K / (1 - H);
+      const V = (1 / N) * ((LGD - K) * K + 0.25 * (1 - LGD) * K);
+      const F = (((V + Math.pow(K, 2)) / (1 - H)) - Math.pow(c, 2)) + ((1 - K) * K - V) / ((1 - H) * tau);
+      const G = (((1 - c) * c) / F) - 1;
+      const a = G * c;
+      const b = G * (1 - c);
+      const D = 1 - (1 - H) * (1 - dist.beta(K, a, b));
+      const K_L = (1 - H) * ((1 - dist.beta(L, a, b)) * L + dist.beta(L, a + 1, b) * c);
+      const K_KIRB = (1 - H) * ((1 - dist.beta(K, a, b)) * K + dist.beta(K, a + 1, b) * c);
+      const K_L_T = (1 - H) * ((1 - dist.beta(L + T, a, b)) * (L + T) + dist.beta(L + T, a + 1, b) * c);
+
       let S_L: number;
       let S_L_T: number;
-
-      T = Detach - L;
-      H = Math.pow(1 - (K / LGD), N);
-      this.log.h = H;
-      c = K / (1 - H);
-      this.log.c = c;
-      V = (1 / N) * ((LGD - K) * K + 0.25 * (1 - LGD) * K);
-      this.log.V = V;
-      F = (((V + Math.pow(K, 2)) / (1 - H)) - Math.pow(c, 2)) + ((1 - K) * K - V) / ((1 - H) * tau);
-      this.log.f = F;
-      G = (((1 - c) * c) / F) - 1;
-      this.log.G = G;
-      a = G * c;
-      this.log.a = a;
-      b = G * (1 - c);
-      this.log.b = b;
-      D = 1 - (1 - H) * (1 - dist.beta(K, a, b));
-      this.log.d = D;
-      K_L = (1 - H) * ((1 - dist.beta(L, a, b)) * L + dist.beta(L, a + 1, b) * c);
-      this.log.K_L = K_L;
-      K_KIRB = (1 - H) * ((1 - dist.beta(K, a, b)) * K + dist.beta(K, a + 1, b) * c);
-      this.log.K_KIRB = K_KIRB;
-      K_L_T = (1 - H) * ((1 - dist.beta(L + T, a, b)) * (L + T) + dist.beta(L + T, a + 1, b) * c);
-      this.log.K_L_T = K_L_T;
-
       if (L <= K) {
          S_L = L;
-         this.log.S_L = S_L;
       } else {
          S_L = K + K_L - K_KIRB + (D * K / omega) * (1 - Math.exp((omega * (K - L) / K)));
-         this.log.S_L = S_L;
       }
 
       if ((L + T) <= K) {
          S_L_T = L + T;
-         this.log.S_L_T = S_L_T;
       } else {
          S_L_T = K + K_L_T - K_KIRB + (D * K / omega) * (1 - Math.exp(omega * (K - (L + T)) / K))
-         this.log.S_L_T = S_L_T;
       }
-      return Math.max(0.0056 * T, S_L_T - S_L);
+
+      this.log.t = T;
+      this.log.h = H;
+      this.log.c = c;
+      this.log.f = F;
+      this.log.V = V;
+      this.log.G = G;
+      this.log.a = a;
+      this.log.b = b;
+      this.log.d = D;
+      this.log.K_L = K_L;
+      this.log.K_KIRB = K_KIRB;
+      this.log.K_L_T = K_L_T;
+      this.log.S_L = S_L;
+      this.log.S_L_T = S_L_T;
+
+      return Math.max(0.0056, (S_L_T - S_L) / T) * 12.5;
    }
 
    static capitalCorrelationSOV(pd: number) {
