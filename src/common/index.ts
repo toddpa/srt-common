@@ -1,10 +1,11 @@
-import { CapReqCalculator } from "./calculations/cap-req-calculator";
+import { CapReq } from "./calculations/cap-req-calculator";
 import { CapitalRequirements } from "./calculations/cap-req-lib";
-import { Supervisory } from "./calculations/supervisory";
+import { Supervisory, SupervisoryArgs } from "./calculations/supervisory";
 
 export {
-   CapReqCalculator,
-   Supervisory
+   CapReq,
+   Supervisory,
+   SupervisoryArgs
 }
 
 export interface InternalRpl {

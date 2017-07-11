@@ -1,10 +1,23 @@
-import { Formula } from "./formula"
+import { ArgsAsJSON } from "./formula"
 import { BetaDist } from "./beta-dist"
 
-export class Supervisory extends Formula {
+export interface SupervisoryArgs {
+   formula: string;
+   K: number;
+   L: number;
+   detach: number;
+   N: number;
+   LGD: number;
+}
+
+export class Supervisory implements ArgsAsJSON {
    log: any = {};
 
-   calc(K: number, L: number, Detach: number, N: number, LGD: number, tau: number = 1000, omega: number = 20) {
+   asJSON(args: any): number {
+      return this.calc(args.K, args.L, args.detach, args.N, args.LGD);
+   }
+
+   calc(K: number, L: number, Detach: number, N: number, LGD: number, tau: number = 1000, omega: number = 20): number {
       const dist = new BetaDist();
 
       const T = Detach - L;
@@ -51,9 +64,4 @@ export class Supervisory extends Formula {
 
       return Math.max(0.0056, (S_L_T - S_L) / T) * 12.5;
    }
-
-   static capitalCorrelationSOV(pd: number) {
-      return 0.12 * (1 - Math.exp(-50.0 * pd)) / (1 - Math.exp(-50.0)) + 0.24 * (1 - (1 - Math.exp(-50.0 * pd)) / (1 - Math.exp(-35.0)));
-   }
-
 }
