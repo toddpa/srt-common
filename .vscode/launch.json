@@ -4,20 +4,37 @@
    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
    "version": "0.2.0",
    "configurations": [
+
       {
          "type": "node",
-         "request": "attach",
-         "name": "Attach",
-         "port": 5858
+         "request": "launch",
+         "name": "Debug TS",
+         "env": {
+            "JASMINE_CONFIG_PATH": "jasmine.json"
+         },
+         "args": [
+            "./src/**/*.spec.ts"
+         ],
+         "program": "${workspaceRoot}/node_modules/jasmine-ts/lib/index.js",
+         "cwd": "${workspaceRoot}",
+         "internalConsoleOptions": "openOnSessionStart"
       },
       {
          "type": "node",
          "request": "launch",
-         "name": "Launch Program",
-         "program": "${file}",
-         "outFiles": [
-            "${workspaceRoot}/out/**/*.js"
-         ]
+         "name": "Debug JS",
+         "env": {
+            "JASMINE_CONFIG_PATH": "jasmine.json"
+         },
+         "args": [
+            "./dist/**/*.spec.js"
+         ],
+         "program": "${workspaceRoot}/node_modules/jasmine/bin/jasmine.js",
+         "cwd": "${workspaceRoot}",
+         // "internalConsoleOptions": "openOnSessionStart"
+         // "outFiles": [
+         //    "../dist/**/*.js"
+         // ]
       }
    ]
 }
