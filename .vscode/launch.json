@@ -30,11 +30,7 @@
             "./dist/**/*.spec.js"
          ],
          "program": "${workspaceRoot}/node_modules/jasmine/bin/jasmine.js",
-         "cwd": "${workspaceRoot}",
-         // "internalConsoleOptions": "openOnSessionStart"
-         // "outFiles": [
-         //    "../dist/**/*.js"
-         // ]
+         "cwd": "${workspaceRoot}"
       }
    ]
 }
